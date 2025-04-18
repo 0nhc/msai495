@@ -36,6 +36,17 @@ def display_image(image_array:np.ndarray):
 def _get_neighbour_boundaries(u:int,
                     v:int,
                     shape:np.ndarray.shape):
+    """
+    Get the boundaries of the neighbors of a pixel in a 2D array.
+
+    Args:
+        u (int): The row index of the pixel.
+        v (int): The column index of the pixel.
+        shape (np.ndarray.shape): The shape of the image array.
+
+    Returns:
+        tuple: The boundaries of the neighbors (ulb, uub, vlb, vub).
+    """
     # get the boundaries of the neighbors
     ulb = u-1
     uub = u+1
@@ -53,23 +64,24 @@ def _get_neighbour_boundaries(u:int,
         vub = shape[1]-1
     return ulb, uub, vlb, vub
 
-def _get_label(neighbors:np.ndarray):
-    return np.max(neighbors)
-
-def ccl(image_array:np.ndarray):
+def ccl(image_array:np.ndarray,
+        size_filter:int = 0):
     """
     Perform connected component labeling on a binary image.
     
     Args:
         image_array (np.ndarray): The binary image array.
+        size_filter (int): The minimum size of connected components to keep.
+                           Default is 0.
     
     Returns:
         np.ndarray: The labeled image array.
         int: The number of connected components found.
     """
+    # pixels that have been visited
     visited_pixels = []
+    # list of groups
     groups = []
-
     # go through all the pixels of the image
     for u in range(image_array.shape[0]):
         for v in range(image_array.shape[1]):
@@ -101,8 +113,8 @@ def ccl(image_array:np.ndarray):
                                     # check if the pixel is already visited
                                     if (ulb+i, vlb+j) not in visited_pixels:
                                         neighbors_to_visit.append((ulb+i, vlb+j))
+                    # visit all connected neighbors in this group
                     while True:
-                        # visit the foreground neighbor recursively
                         visiting = neighbors_to_visit.pop(0)
                         # add the pixel to the group
                         groups[-1].append(visiting)
@@ -126,8 +138,14 @@ def ccl(image_array:np.ndarray):
                                                 neighbors_to_visit.append((ulb+i, vlb+j))
                         # check if there are no more neighbors to visit
                         if len(neighbors_to_visit) == 0:
-                            print(f"No more neighbors to visit. Number of groups: {len(groups)}")
                             break
+                    # apply size filter
+                    if len(groups[-1]) < size_filter:
+                        # remove the group from the list
+                        groups.pop(-1)
+                    else:
+                        # print the number of pixels in the group
+                        print(f"Group {len(groups)}: {len(groups[-1])} pixels")
     label = 1
     for group in groups:
         # assign each group a different color in the image
@@ -142,10 +160,10 @@ def main():
     Main function to load and display an image.
     """
     # Example usage
-    path = os.path.join(os.path.dirname(__file__), 'instruction', 'gun.bmp')
+    path = os.path.join(os.path.dirname(__file__), 'instructions', 'face.bmp')
     img = load_image(path)
     # display_image(img)
-    label_img, num_of_groups = ccl(img)
+    label_img, num_of_groups = ccl(img, size_filter=0)
     print(f"Number of groups: {num_of_groups}")
     display_image(label_img)
 
