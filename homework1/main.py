@@ -157,7 +157,7 @@ def ccl(image_array:np.ndarray,
 
 def main():
     """
-    Main function to load and display an image.
+    Main function.
     """
     # Example usage
     path = os.path.join(os.path.dirname(__file__), 'instructions', 'face.bmp')
