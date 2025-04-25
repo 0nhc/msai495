@@ -44,7 +44,7 @@ def add_point(evt: gr.SelectData, mode, orig_img, fg_pts, bg_pts):
     # Overlay that combined mask exactly once (no varying depths)
     overlay = orig_img.copy()
     cm = (combined[:, :, None] * np.array([0, 0, 255])).astype(np.uint8)
-    overlay = cv2.addWeighted(overlay, 1.0, cm, 0.35, 0)
+    overlay = cv2.addWeighted(overlay, 1.0, cm, 0.75, 0)
 
     # Draw points **on top** of the mask overlay
     r = get_point_radius(overlay)
@@ -73,10 +73,10 @@ def clear_last(mode, orig_img, fg_pts, bg_pts):
     )
 
     # Overlay masks
+    combined = np.any(masks, axis=0).astype(np.uint8)
     overlay = orig_img.copy()
-    for m in masks:
-        cm = (m[:, :, None] * np.array([0, 0, 255])).astype(np.uint8)
-        overlay = cv2.addWeighted(overlay, 1.0, cm, 0.35, 0)
+    cm = (combined[:, :, None] * np.array([0, 0, 255])).astype(np.uint8)
+    overlay = cv2.addWeighted(overlay, 1.0, cm, 0.75, 0)
 
     # Draw points **on top** of the mask overlay
     r = get_point_radius(overlay)
