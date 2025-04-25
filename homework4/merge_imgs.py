@@ -33,8 +33,8 @@ def display_image(image_array:np.ndarray):
     plt.show()
 
 
-path1 = os.path.join(os.path.dirname(__file__), 'dataset', 'middle_finger_rgb.png')
-path2 = os.path.join(os.path.dirname(__file__), 'dataset', 'middle_finger_mask.png')
+path1 = os.path.join(os.path.dirname(__file__), 'dataset', 'pointer1_rgb.png')
+path2 = os.path.join(os.path.dirname(__file__), 'dataset', 'pointer1_mask.png')
 # path3 = os.path.join(os.path.dirname(__file__), 'results', 'pointer1_masked_nrgb.png')
 # path4 = os.path.join(os.path.dirname(__file__), 'results', 'pointer1_masked_hsi.png')
 
@@ -48,7 +48,7 @@ fig, axs = plt.subplots(1, 2, figsize=(8, 4.5))
 axs[0].imshow(img1)
 axs[0].set_title('Original Image')
 axs[1].imshow(img2, cmap='gray')
-axs[1].set_title('MGround Truth Mask from SAM 2')
+axs[1].set_title('Ground Truth Mask from SAM 2')
 # axs[2].imshow(img3)
 # axs[2].set_title('Masked with nRGB')
 # axs[3].imshow(img4)
@@ -56,4 +56,5 @@ axs[1].set_title('MGround Truth Mask from SAM 2')
 for ax in axs:
     ax.axis('off')  # Hide axes
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig(os.path.join(os.path.dirname(__file__), 'results', 'pointer1_data.png'), bbox_inches='tight', dpi=300)

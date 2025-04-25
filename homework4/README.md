@@ -9,9 +9,7 @@ In `main.py`, I implement:
 
 For generating training data, I used [Segment Anything Model 2 (SAM 2)](https://github.com/facebookresearch/sam2) to generate masks as **ground truth**:
 
-![gun1_data](results/gun1_data.png)
-![joy1_data](results/joy1_data.png)
-![pointer1_data](results/pointer1_data.png)
+![sam2](results/sam2.png)
 
 ## 2. Algorithm Description
 
@@ -40,12 +38,20 @@ For generating training data, I used [Segment Anything Model 2 (SAM 2)](https://
 ### 2D Histograms
 I’m displaying the rescaled R–G, nR–nG, and H–S 2D histograms as 256×256 grayscale images, where each pixel’s intensity encodes its probability (0–1).
 
-![rgb](results/rgb.png)
-![nrgb](results/nrgb.png)
-![hsi](results/hsi.png)
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <img src="results/rgb.png" alt="RGB" style="width: 30%;" />
+  <img src="results/nrgb.png" alt="nRGB" style="width: 30%;" />
+  <img src="results/hsi.png" alt="HSI" style="width: 30%;" />
+</div>
 
 ### Masked Results
 As illustrated below, I’ve applied various 2D-histogram thresholds to segment the hands in each image, and a quick glance shows the HSI-based method produces the most accurate masks.
 ![gun1_merged](results/gun1_merged.png)
 ![joy1_merged](results/joy1_merged.png)
 ![pointer1_merged](results/pointer1_merged.png)
+
+### Ground Truth 
+All ground truth masks are segmented with SAM 2.
+![gun1_merged](results/gun1_data.png)
+![joy1_merged](results/joy1_data.png)
+![pointer1_merged](results/pointer1_data.png)

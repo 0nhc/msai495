@@ -147,9 +147,7 @@
 <li>Segmentation of images using the computed 2D histograms by thresholding the color probability.</li>
 </ul>
 <p>For generating training data, I used <a href="https://github.com/facebookresearch/sam2">Segment Anything Model 2 (SAM 2)</a> to generate masks as <strong>ground truth</strong>:</p>
-<p><img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/gun1_data.png" alt="gun1_data">
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/joy1_data.png" alt="joy1_data">
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/pointer1_data.png" alt="pointer1_data"></p>
+<p><img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/sam2.png" alt="sam2"></p>
 <h2 id="2-algorithm-description">2. Algorithm Description</h2>
 <ul>
 <li>
@@ -189,14 +187,21 @@
 <h2 id="3-results">3. Results</h2>
 <h3 id="2d-histograms">2D Histograms</h3>
 <p>I’m displaying the rescaled R–G, nR–nG, and H–S 2D histograms as 256×256 grayscale images, where each pixel’s intensity encodes its probability (0–1).</p>
-<p><img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/rgb.png" alt="rgb">
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/nrgb.png" alt="nrgb">
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/hsi.png" alt="hsi"></p>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/rgb.png" alt="RGB" style="width: 30%;" />
+  <img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/nrgb.png" alt="nRGB" style="width: 30%;" />
+  <img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/hsi.png" alt="HSI" style="width: 30%;" />
+</div>
 <h3 id="masked-results">Masked Results</h3>
 <p>As illustrated below, I’ve applied various 2D-histogram thresholds to segment the hands in each image, and a quick glance shows the HSI-based method produces the most accurate masks.
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/gun1_merged.png" alt="gun1_merged">
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/joy1_merged.png" alt="joy1_merged">
-<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/pointer1_merged.png" alt="pointer1_merged"></p>
+<img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/gun1_merged.png" alt="gun1_merged">
+<img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/joy1_merged.png" alt="joy1_merged">
+<img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/pointer1_merged.png" alt="pointer1_merged"></p>
+<h3 id="ground-truth">Ground Truth</h3>
+<p>All ground truth masks are segmented with SAM 2.
+<img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/gun1_data.png" alt="gun1_merged">
+<img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/joy1_data.png" alt="joy1_merged">
+<img src="file:////home/zhengxiao-han/projects/courses/msai495/homework4/results/pointer1_data.png" alt="pointer1_merged"></p>
 
             
             
