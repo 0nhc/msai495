@@ -226,25 +226,28 @@ def main():
     Main function.
     """
     dataset_dir = os.path.join(os.path.dirname(__file__), 'dataset')
-    test_rgb_path = os.path.join(os.path.dirname(__file__), 'instructions', 'gun1.bmp')
+    # test_rgb_path = os.path.join(os.path.dirname(__file__), 'instructions', 'gun1.bmp')
+    # test_rgb_path = os.path.join(os.path.dirname(__file__), 'instructions', 'joy1.bmp')
+    # test_rgb_path = os.path.join(os.path.dirname(__file__), 'instructions', 'pointer1.bmp')
+    test_rgb_path = os.path.join(os.path.dirname(__file__), 'dataset', 'middle_finger_rgb.png')
 
     """
     RGB Histogram
     """
-    # Compute the histogram over all masked pixels
-    hist2d = compute_rg_histogram(dataset_dir)
-    # Normalize the histogram
-    hist2d = normalize_nonzero(hist2d)
-    # Visualize it
-    visualize_histogram(hist2d)
-    # Test the histogram on a single image
-    rgb_img = load_image(test_rgb_path, img_format='rgb')
-    rgb_to_nrgb(rgb_img)
-    mask = segment_by_histogram(rgb_img, hist2d, threshold=1e-3)
-    # mask the image
-    img_masked = cv2.bitwise_and(rgb_img, rgb_img, mask=mask)
-    # Display the original image and the mask
-    display_image(img_masked, title='Original Image')
+    # # Compute the histogram over all masked pixels
+    # hist2d = compute_rg_histogram(dataset_dir)
+    # # Normalize the histogram
+    # hist2d = normalize_nonzero(hist2d)
+    # # Visualize it
+    # visualize_histogram(hist2d)
+    # # Test the histogram on a single image
+    # rgb_img = load_image(test_rgb_path, img_format='rgb')
+    # rgb_to_nrgb(rgb_img)
+    # mask = segment_by_histogram(rgb_img, hist2d, threshold=1e-3)
+    # # mask the image
+    # img_masked = cv2.bitwise_and(rgb_img, rgb_img, mask=mask)
+    # # Display the original image and the mask
+    # display_image(img_masked, title='Original Image')
 
     """
     nRGB Histogram
@@ -258,7 +261,7 @@ def main():
     # # Test the histogram on a single image
     # rgb_img = load_image(test_rgb_path, img_format='rgb')
     # nrgb_img = rgb_to_nrgb(rgb_img)
-    # mask = segment_by_histogram(nrgb_img, hist2d, threshold=0.02)
+    # mask = segment_by_histogram(nrgb_img, hist2d, threshold=0.25)
     # # mask the image
     # img_masked = cv2.bitwise_and(rgb_img, rgb_img, mask=mask)
     # # Display the original image and the mask
@@ -276,13 +279,11 @@ def main():
     # # Test the histogram on a single image
     # rgb_img = load_image(test_rgb_path, img_format='rgb')
     # hsi_img = rgb_to_hsi(rgb_img)
-    # mask = segment_by_histogram(hsi_img, hist2d, threshold=1e-3)
+    # mask = segment_by_histogram(hsi_img, hist2d, threshold=1e-2)
     # # mask the image
     # img_masked = cv2.bitwise_and(rgb_img, rgb_img, mask=mask)
     # # Display the original image and the mask
     # display_image(img_masked, title='Original Image')
-                
-
 
 if __name__ == "__main__":
     main()
