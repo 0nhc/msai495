@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>MP4</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="mp4">MP4</h1>
+<h2 id="1-overview">1. Overview</h2>
+<p>In <code>main.py</code>, I implement:</p>
+<ul>
+<li>Computation of 2D color histograms in different color spaces (RGB, nRGB, HSI) over masked image regions.</li>
+<li>Visualization of the resulting histogram as a grayscale images.</li>
+<li>Segmentation of images using the computed 2D histograms by thresholding the color probability.</li>
+</ul>
+<p>For generating training data, I used <a href="https://github.com/facebookresearch/sam2">Segment Anything Model 2 (SAM 2)</a> to generate masks as <strong>ground truth</strong>:</p>
+<p><img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/gun1_data.png" alt="gun1_data">
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/joy1_data.png" alt="joy1_data">
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/pointer1_data.png" alt="pointer1_data"></p>
+<h2 id="2-algorithm-description">2. Algorithm Description</h2>
+<ul>
+<li>
+<p><strong>2D Histogram Computation</strong></p>
+<ol>
+<li>Traverse each <code>*rgb.png</code> and its corresponding <code>*mask.png</code> in the dataset directory.</li>
+<li>Load the image in the chosen color space (<code>rgb</code>, <code>nrgb</code>, or <code>hsi</code>).</li>
+<li>Apply the binary mask to select valid pixels.</li>
+<li>Accumulate counts for each channel pair (R,G) into a 256×256 histogram array with <code>np.add.at</code>.</li>
+<li>Normalize counts by the total number of masked pixels to obtain a probability distribution.</li>
+</ol>
+</li>
+<li>
+<p><strong>Normalization</strong></p>
+<ul>
+<li><strong>Non-zero scaling</strong>: scale only non-zero histogram bins so that the maximum becomes 1.</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualization</strong></p>
+<ol>
+<li>Normalize histogram values to [0..1] or directly use probabilities.</li>
+<li>Multiply by 255 and convert to <code>uint8</code> to form a grayscale image.</li>
+<li>Display using PIL’s <code>Image.show()</code>.</li>
+</ol>
+</li>
+<li>
+<p><strong>Segmentation</strong></p>
+<ol>
+<li>For a test image, look up each pixel’s (r,g) probability from the histogram.</li>
+<li>Optionally normalize the histogram’s non-zero values.</li>
+<li>Apply a probability threshold to generate a binary mask (0 or 255).</li>
+<li>Mask the original RGB image for visualization.</li>
+</ol>
+</li>
+</ul>
+<h2 id="3-results">3. Results</h2>
+<h3 id="2d-histograms">2D Histograms</h3>
+<p>I’m displaying the rescaled R–G, nR–nG, and H–S 2D histograms as 256×256 grayscale images, where each pixel’s intensity encodes its probability (0–1).</p>
+<p><img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/rgb.png" alt="rgb">
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/nrgb.png" alt="nrgb">
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/hsi.png" alt="hsi"></p>
+<h3 id="masked-results">Masked Results</h3>
+<p>As illustrated below, I’ve applied various 2D-histogram thresholds to segment the hands in each image, and a quick glance shows the HSI-based method produces the most accurate masks.
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/gun1_merged.png" alt="gun1_merged">
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/joy1_merged.png" alt="joy1_merged">
+<img src="file:////home/zhengxiao-han/courses/msai495/homework4/results/pointer1_merged.png" alt="pointer1_merged"></p>
+
+            
+            
+        </body>
+        </html>
